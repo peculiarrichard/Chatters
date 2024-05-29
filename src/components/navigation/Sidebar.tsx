@@ -54,7 +54,7 @@ export const SideBar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
         <button
           className="flex gap-x-3 items-center text-sm text-[#586179] leading-[1.5rem] px-4"
           onClick={() => signoutUser(router)}>
-          <RiLogoutCircleRLine size={25} /> Logout
+          <RiLogoutCircleRLine size={25} /> Signout
         </button>
       </div>
 

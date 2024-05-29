@@ -2,7 +2,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 
 export const signoutUser = async (router: AppRouterInstance) => {
   try {
-    const res = await fetch("/api/auth/logout", {
+    const res = await fetch("/api/auth/signout", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

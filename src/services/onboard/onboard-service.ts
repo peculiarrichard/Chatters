@@ -30,11 +30,8 @@ export const onboardUserService = async (
         "success"
       );
       handleCancel();
-    } else {
-      setErrorMsg(
-        res.data.message || "Something went wrong. Please try again."
-      );
     }
+    return res;
   } catch (err: any) {
     if (err.name === "ValidationError") {
       const validationErrors: { [key: string]: string } = {};

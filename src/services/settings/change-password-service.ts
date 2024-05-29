@@ -1,33 +1,29 @@
-import { AccountDetails } from "@/models/props/settings/AccountDetails";
+import { ChangePasswordInterface } from "@/models/props/settings/ChangePassword";
 import { fetchWrapper } from "@/helpers/fetch-wrapper";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { openNotification } from "@/components/commons/Toasts";
-import { accountSettingsValidationSchema } from "@/validations/settings/accountsettings-validation";
+import { changePasswordValidation } from "@/validations/settings/changePasswordValidation";
 import * as Yup from "yup";
 
-export const updateProfileService = async (
-  values: AccountDetails,
+export const changePasswordService = async (
+  values: ChangePasswordInterface,
+  router: AppRouterInstance,
   setLoading: (val: boolean) => void,
   setErrMsg: (val: string) => void,
   setFormErrors: (errors: { [key: string]: string }) => void
 ) => {
   try {
-    await accountSettingsValidationSchema.validate(values, {
+    await changePasswordValidation.validate(values, {
       abortEarly: false,
     });
 
     setLoading(true);
-    const url = "/api/settings/update-profile";
+
+    const url = "/api/settings/change-password";
     const res = await fetchWrapper(url, "PUT", values);
     if (res.status === 200) {
-      const chattersUser = localStorage.getItem("chattersUser");
-      let parsedChattersUser = chattersUser ? JSON.parse(chattersUser) : null;
-      parsedChattersUser = res.data.updatedProfile;
-      localStorage.setItem("chattersUser", JSON.stringify(parsedChattersUser));
-      openNotification(
-        "Success",
-        res.data.message || "Profile updated successfully",
-        "success"
-      );
+      openNotification("Success", res.data.message, "success");
+      router.push("/dashboard");
     }
     return res;
   } catch (err: any) {

@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest) {
       { new: true }
     );
     return NextResponse.json(
-      { message: "Profile updated successfully" },
+      { message: "Profile updated successfully", updatedProfile },
       { status: 200 }
     );
   } catch (error: any) {

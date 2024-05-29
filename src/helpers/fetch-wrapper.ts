@@ -7,7 +7,7 @@ async function handleResponse(response: any) {
         window.location.href = "/login";
       }
     }
-    const error = new Error(response.statusText);
+    const error = new Error(data.message || response.statusText);
     console.error(error);
     throw error;
   }
