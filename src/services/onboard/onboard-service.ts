@@ -1,8 +1,9 @@
 import { fetchWrapper } from "@/helpers/fetch-wrapper";
-import { OnboardingInterface } from "@/models/onboarding/OnborardingInterface";
+import { OnboardingInterface } from "@/models/props/onboarding/OnborardingInterface";
 import { onboardValidationSchema } from "@/validations/onboarding/onboard-validation";
 import * as Yup from "yup";
 import { openNotification } from "@/components/commons/Toasts";
+import { handleValidationError } from "@/utils/general/handleValidationErrors";
 
 export const onboardUserService = async (
   values: OnboardingInterface,
@@ -33,17 +34,7 @@ export const onboardUserService = async (
     }
     return res;
   } catch (err: any) {
-    if (err.name === "ValidationError") {
-      const validationErrors: { [key: string]: string } = {};
-      (err.inner as Array<Yup.ValidationError>).forEach((e) => {
-        if (e.path) {
-          validationErrors[e.path] = e.errors[0];
-        }
-      });
-      setFormErrors(validationErrors);
-    } else {
-      setErrorMsg(err.message || "Something went wrong. Please try again.");
-    }
+    handleValidationError(err, setFormErrors, setErrorMsg);
     console.error(err);
   } finally {
     setLoading(false);

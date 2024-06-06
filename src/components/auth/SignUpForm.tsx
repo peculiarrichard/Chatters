@@ -1,4 +1,4 @@
-import { SignUpInterface } from "@/models/auth/SignUpModel";
+import { SignUpInterface } from "@/models/props/auth/SignUpModel";
 import { GeneralInput } from "../form-elements/GeneralInput";
 import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";

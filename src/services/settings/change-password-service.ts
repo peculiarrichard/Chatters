@@ -3,7 +3,7 @@ import { fetchWrapper } from "@/helpers/fetch-wrapper";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { openNotification } from "@/components/commons/Toasts";
 import { changePasswordValidation } from "@/validations/settings/changePasswordValidation";
-import * as Yup from "yup";
+import { handleValidationError } from "@/utils/general/handleValidationErrors";
 
 export const changePasswordService = async (
   values: ChangePasswordInterface,
@@ -27,17 +27,7 @@ export const changePasswordService = async (
     }
     return res;
   } catch (err: any) {
-    if (err.name === "ValidationError") {
-      const validationErrors: { [key: string]: string } = {};
-      (err.inner as Array<Yup.ValidationError>).forEach((e) => {
-        if (e.path) {
-          validationErrors[e.path] = e.errors[0];
-        }
-      });
-      setFormErrors(validationErrors);
-    } else {
-      setErrMsg(err.message || "Something went wrong. Please try again.");
-    }
+    handleValidationError(err, setFormErrors, setErrMsg);
     console.error(err);
   } finally {
     setLoading(false);

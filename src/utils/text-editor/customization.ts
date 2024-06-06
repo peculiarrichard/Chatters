@@ -1,0 +1,43 @@
+export const modules = {
+  toolbar: [
+    [{ header: [1, 2, 3, 4, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { list: "check" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link", "image", "formula"],
+    ["blockquote", "code-block"],
+    [{ script: "sub" }, { script: "super" }],
+    [{ color: [] }, { background: [] }],
+    [{ font: [] }],
+    [{ align: [] }],
+    ["clean"],
+  ],
+};
+
+export const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "check",
+  "indent",
+  "link",
+  "image",
+  "formula",
+  "blockquote",
+  "code-block",
+  "script",
+  "super",
+  "color",
+  "background",
+  "font",
+  "align",
+];

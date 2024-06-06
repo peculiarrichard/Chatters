@@ -1,15 +1,17 @@
 import { connect } from "@/lib/dbConfig";
-import User from "@/schema/auth/UserSchema";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
+import AuthRepository from "@/repositories/auth.repository";
+
+const { findUser } = AuthRepository;
 
 connect();
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
-    const user = await User.findOne({ email });
+    const user = await findUser(email);
     if (!user) {
       return NextResponse.json(
         { message: "User does not exist" },

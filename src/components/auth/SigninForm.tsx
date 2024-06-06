@@ -1,4 +1,4 @@
-import { SigninInterface } from "@/models/auth/SigninModel";
+import { SigninInterface } from "@/models/props/auth/SigninModel";
 import { GeneralInput } from "../form-elements/GeneralInput";
 import { useState } from "react";
 import { HiOutlineMail } from "react-icons/hi";

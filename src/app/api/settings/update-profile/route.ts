@@ -1,7 +1,9 @@
 import { connect } from "@/lib/dbConfig";
-import User from "@/schema/auth/UserSchema";
 import { getUserDataFromToken } from "@/helpers/get-user-data-from-token";
 import { NextResponse, NextRequest } from "next/server";
+import SettingsRepository from "@/repositories/settings.repository";
+
+const { updateProfile } = SettingsRepository;
 
 connect();
 
@@ -16,17 +18,13 @@ export async function PUT(req: NextRequest) {
       );
     }
     let userId = auth.data.id;
-    const updatedProfile = await User.findOneAndUpdate(
-      { _id: userId },
-      {
-        userName: userName,
-        topicsOfInterest: topicsOfInterest,
-        isProfileCompleted: true,
-        bio: bio,
-        website: website
-      },
-      { new: true }
-    );
+    const updatedProfile = await updateProfile(
+      userName,
+      topicsOfInterest,
+      userId,
+      bio,
+      website
+    )
     return NextResponse.json(
       { message: "Profile updated successfully", updatedProfile },
       { status: 200 }

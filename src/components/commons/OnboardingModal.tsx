@@ -1,6 +1,6 @@
 import { GeneralInput } from "../form-elements/GeneralInput";
 import { topicsOfInterestList } from "@/data/topicsOfInterestList";
-import { OnboardingInterface } from "@/models/onboarding/OnborardingInterface";
+import { OnboardingInterface } from "@/models/props/onboarding/OnborardingInterface";
 import { useState } from "react";
 import { Checkbox, Modal, Select } from "antd";
 import { Button } from "./Buttons";

@@ -34,6 +34,7 @@ export const Button = ({
   disabled,
   loading,
   buttonText,
+  onClick,
   ...rest
 }: {
   children?: string;
@@ -43,6 +44,7 @@ export const Button = ({
   disabled?: boolean;
   loading?: boolean;
   buttonText: string;
+  onClick?: () => void;
 }) => {
   let variantProperties;
   className = disabled
@@ -80,6 +82,7 @@ export const Button = ({
       <button
         className={className + " " + variantProperties}
         type={type}
+        onClick={onClick}
         {...rest}>
         {loading ? <Spin /> : buttonText}
         {children}

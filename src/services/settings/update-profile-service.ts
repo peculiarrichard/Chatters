@@ -2,7 +2,7 @@ import { AccountDetails } from "@/models/props/settings/AccountDetails";
 import { fetchWrapper } from "@/helpers/fetch-wrapper";
 import { openNotification } from "@/components/commons/Toasts";
 import { accountSettingsValidationSchema } from "@/validations/settings/accountsettings-validation";
-import * as Yup from "yup";
+import { handleValidationError } from "@/utils/general/handleValidationErrors";
 
 export const updateProfileService = async (
   values: AccountDetails,
@@ -31,17 +31,7 @@ export const updateProfileService = async (
     }
     return res;
   } catch (err: any) {
-    if (err.name === "ValidationError") {
-      const validationErrors: { [key: string]: string } = {};
-      (err.inner as Array<Yup.ValidationError>).forEach((e) => {
-        if (e.path) {
-          validationErrors[e.path] = e.errors[0];
-        }
-      });
-      setFormErrors(validationErrors);
-    } else {
-      setErrMsg(err.message || "Something went wrong. Please try again.");
-    }
+    handleValidationError(err, setFormErrors, setErrMsg);
     console.error(err);
   } finally {
     setLoading(false);

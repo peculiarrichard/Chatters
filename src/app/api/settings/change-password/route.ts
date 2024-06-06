@@ -1,8 +1,12 @@
 import { connect } from "@/lib/dbConfig";
-import User from "@/schema/auth/UserSchema";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import { getUserDataFromToken } from "@/helpers/get-user-data-from-token";
+import AuthRepository from "@/repositories/auth.repository";
+import SettingsRepository from "@/repositories/settings.repository";
+
+const { findUser } = AuthRepository;
+const { updateUserPassword } = SettingsRepository;
 
 connect();
 
@@ -17,7 +21,7 @@ export async function PUT(request: NextRequest) {
       );
     }
     let { email } = auth.data;
-    const user = await User.findOne({ email });
+    const user = await findUser(email);
     const validPassword = await bcryptjs.compare(oldPassword, user.password);
     if (!validPassword) {
       return NextResponse.json(
@@ -28,7 +32,7 @@ export async function PUT(request: NextRequest) {
 
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(newPassword, salt);
-    await User.updateOne({ email: email }, { password: hashedPassword });
+    await updateUserPassword(hashedPassword, email);
     return NextResponse.json(
       { message: "Password changed successfully!" },
       { status: 200 }

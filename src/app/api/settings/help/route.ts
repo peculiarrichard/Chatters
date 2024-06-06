@@ -1,7 +1,9 @@
 import { connect } from "@/lib/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
-import HelpAndFeedback from "@/schema/settings/HelpSchema";
 import { getUserDataFromToken } from "@/helpers/get-user-data-from-token";
+import SettingsRepository from "@/repositories/settings.repository";
+
+const { saveNewFeedback } = SettingsRepository;
 
 connect();
 
@@ -18,15 +20,14 @@ export async function POST(request: NextRequest) {
     }
     let { id, email, fullName } = auth.data;
 
-    const newFeeback = new HelpAndFeedback({
+    const feedBackData = {
       message: message,
       userEmail: email,
       usersName: fullName,
       subject: subject,
       userId: id,
-    });
-
-    await newFeeback.save();
+    };
+    const newFeeback = await saveNewFeedback(feedBackData);
     return NextResponse.json(
       {
         message:

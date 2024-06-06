@@ -1,8 +1,9 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { SigninInterface } from "@/models/auth/SigninModel";
+import { SigninInterface } from "@/models/props/auth/SigninModel";
 import { signinValidationSchema } from "@/validations/auth/signin-validation";
 import { openNotification } from "@/components/commons/Toasts";
-import * as Yup from "yup";
+
+import { handleValidationError } from "@/utils/general/handleValidationErrors";
 
 export const signinService = async (
   values: SigninInterface,
@@ -35,17 +36,7 @@ export const signinService = async (
     }
     return data;
   } catch (error: any) {
-    if (error.name === "ValidationError") {
-      const validationErrors: { [key: string]: string } = {};
-      (error.inner as Array<Yup.ValidationError>).forEach((e) => {
-        if (e.path) {
-          validationErrors[e.path] = e.errors[0];
-        }
-      });
-      setFormErrors(validationErrors);
-    } else {
-      setErrorMsg(error.message || "Something went wrong. Please try again.");
-    }
+    handleValidationError(error, setFormErrors, setErrorMsg);
     console.error(error);
   } finally {
     setLoading(false);
